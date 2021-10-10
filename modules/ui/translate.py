@@ -54,3 +54,39 @@ class Translate(QObject):
 
     def LABEL_RESULT_MM(self) -> str:
         return self.tr("Result (mm):")
+
+    def LABEL_HORIZONTAL_SIZE(self) -> str:
+        return self.tr("Horizontal size (mm):")
+
+    def LABEL_VERTICAL_SIZE(self) -> str:
+        return self.tr("Vertical size (mm):")
+
+    def LABEL_HORIZONTAL_RESOLUTION(self) -> str:
+        return self.tr("Horizontal resolution (px):")
+
+    def LABEL_VERTICAL_RESOLUTION(self) -> str:
+        return self.tr("Vertical resolution (px):")
+
+    def LABEL_HORIZONTAL_PIXEL_SIZE(self) -> str:
+        return self.tr("Horizontal pixel size (µm):")
+
+    def LABEL_VERTICAL_PIXEL_SIZE(self) -> str:
+        return self.tr("Vertical pixel size (µm):")
+
+    def CALC_SELECTOR(self) -> str:
+        return self.tr("Calculation type:")
+
+    def TOOLTIP_CCD_RESOLUTION(self) -> str:
+        return self.tr("(Pixel size / Focal Lenght) * 206.265")
+
+    def TOOLTIP_CCD_FOCAL_LENGHT(self) -> str:
+        return self.tr("(Pixel size * 206.265) / Resolution")
+
+    def TOOLTIP_CCD_PIXEL_SIZE(self) -> str:
+        return self.tr("Size / Resolution")
+
+    def TOOLTIP_CCD_CHIP_SIZE(self) -> str:
+        return self.tr("Pixel Size / Resolution")
+
+    def TOOLTIP_COPY_TO_CLIPBOARD(self) -> str:
+        return self.tr("Copy to clipboard")

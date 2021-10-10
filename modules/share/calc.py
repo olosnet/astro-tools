@@ -3,20 +3,14 @@ import math
 class Calc:
 
     @staticmethod
-    def ccd_resolution(ccd_pixel_size, focal_lenght, multi_factor = 206.265, round_result = True, round_digits = 3):
+    def ccd_resolution(ccd_pixel_size, focal_lenght, multi_factor = 206.265):
         result = (ccd_pixel_size / focal_lenght) * multi_factor
-
-        if round_result:
-            result = round(result, round_digits)
 
         return result
 
     @staticmethod
-    def ccd_focal_lenght(ccd_pixel_size, ccd_resolution, multi_factor = 206.265, round_result = True, round_digits = 0):
+    def ccd_focal_lenght(ccd_pixel_size, ccd_resolution, multi_factor = 206.265):
         result = (ccd_pixel_size * multi_factor) / ccd_resolution
-
-        if round_result:
-            result = round(result, round_digits)
 
         return result
 
