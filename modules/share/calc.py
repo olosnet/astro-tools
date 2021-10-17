@@ -32,7 +32,7 @@ class Calc:
         return ccd_h_size, ccd_v_size, diagonally
 
     @staticmethod
-    def to_jd_dt(dt : datetime, precision=10) -> float:
+    def to_jd_dt(dt: datetime, precision=10) -> float:
         return Calc.to_jd(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second, precision)
 
     @staticmethod
@@ -60,6 +60,35 @@ class Calc:
         dt = dt.replace(hour=hh, minute=mm, second=ss)
 
         return dt
+
+    @staticmethod
+    def calc_gmst_deg_dt(dt: datetime):
+        return Calc.calc_gmst_deg(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
+
+    @staticmethod
+    def calc_gmst_deg(year: int, month: int, day: int, hh: int, mm: int, ss: int):
+        jd_j2000 = 2451545.0
+        jd_now = Calc.to_jd(year, month, day, hh, mm, ss)
+        jd_difference = jd_now - jd_j2000
+        jc = jd_difference / 36525.0
+
+        res = 280.46061837 + 360.98564736629*jd_difference + \
+            0.000387933 * (jc ** 2) - (jc ** 3)/38710000
+
+        if res > 0.0:
+            while res > 360.0:
+                res -= 360.0
+        else:
+            while res < 0.0:
+                res += 360.0
+
+        deg = math.floor(res)
+        curr = (res - deg) * 60
+        min = math.floor(curr)
+        curr = (curr - min) * 60
+        sec = math.floor(curr)
+
+        return deg, min, sec
 
     @staticmethod
     def trunc_f(f: float, n: int) -> float:
