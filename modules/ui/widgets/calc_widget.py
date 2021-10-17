@@ -1,18 +1,18 @@
 from PyQt5.QtWidgets import QComboBox, QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
-from modules.ui.translate import Translate
+from modules.ui.translate import CalcWidgetTranslate as tr
 from modules.ui.widgets.calc_ccd_widget import CalcCCDWidget
 
 
 class CalcWidget(QWidget):
 
-    __tr = Translate()
     __calc_selector = None
     __calc_ccd_widget = None
     __locale = None
 
     def __init__(self, parent, locale) -> None:
         super().__init__(parent)
+
         self.__locale = locale
         layout = QVBoxLayout(self)
 
@@ -33,7 +33,7 @@ class CalcWidget(QWidget):
         self.__calc_selector = QComboBox()
         self.__calc_selector.currentIndexChanged.connect(self.on_calc_selector_change)
         self.__calc_selector.addItem("CCD")
-        selector_layout.addWidget(QLabel(self.__tr.CALC_SELECTOR(), selector_widget), 0)
+        selector_layout.addWidget(QLabel(tr.CALC_SELECTOR(selector_widget), selector_widget), 0)
         selector_layout.addWidget(self.__calc_selector, 0)
         selector_widget.setLayout(selector_layout)
         return selector_widget
