@@ -2,12 +2,14 @@ from PyQt5.QtWidgets import QComboBox, QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
 from modules.ui.translate import CalcWidgetTranslate as tr
 from modules.ui.widgets.calc_ccd_widget import CalcCCDWidget
+from modules.ui.widgets.calc_time_widget import CalcTimeWidget
 
 
 class CalcWidget(QWidget):
 
     __calc_selector = None
     __calc_ccd_widget = None
+    __calc_time_widget = None
     __locale = None
 
     def __init__(self, parent, locale) -> None:
@@ -22,8 +24,12 @@ class CalcWidget(QWidget):
         self.__calc_ccd_widget = CalcCCDWidget(self, self.__locale)
         self.__calc_ccd_widget.setVisible(True)
 
+        self.__calc_time_widget = CalcTimeWidget(self, self.__locale)
+        self.__calc_time_widget.setVisible(False)
+
         layout.addWidget(selector_widget, 0)
         layout.addWidget(self.__calc_ccd_widget, 1)
+        layout.addWidget(self.__calc_time_widget, 1)
         self.setLayout(layout)
 
     def __make_calc_selector(self, widget) -> QWidget:
@@ -40,5 +46,11 @@ class CalcWidget(QWidget):
         return selector_widget
 
     def on_calc_selector_change(self) -> None:
-        ccd_visible = self.__calc_selector.currentIndex() == 0
-        self.__calc_ccd_widget.setVisible(ccd_visible)
+
+        if self.__calc_ccd_widget and self.__calc_time_widget:
+
+            ccd_visible = self.__calc_selector.currentIndex() == 0
+            time_visible = self.__calc_selector.currentIndex() == 1
+
+            self.__calc_ccd_widget.setVisible(ccd_visible)
+            self.__calc_time_widget.setVisible(time_visible)

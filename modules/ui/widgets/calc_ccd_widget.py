@@ -1,9 +1,7 @@
 
 from PyQt5 import QtGui
-from PyQt5.QtCore import QLine, QLocale, QSize
-from PyQt5.QtGui import QKeySequence
-from PyQt5.QtWidgets import QApplication, QComboBox, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QLineEdit, QMainWindow, QMenuBar, QMenu, \
-    QAction, QPushButton, QSpacerItem, QSpinBox, QStatusBar, QVBoxLayout, QTabWidget, QWidget, QGroupBox
+from PyQt5.QtWidgets import QApplication, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QLineEdit, QMainWindow, QMenuBar, QMenu, \
+    QPushButton, QSpinBox, QVBoxLayout, QWidget, QGroupBox
 
 from modules.share.calc import Calc
 from modules.ui.translate import CalcCCDWidgetTranslate as tr
@@ -296,7 +294,8 @@ class CalcCCDWidget(QGroupBox):
             QLabel(tr.LABEL_DIAGONALLY(self)), 2, 2)
         self.__ccd_chip_result_diagonally = QLineEdit()
         self.__ccd_chip_result_diagonally.setReadOnly(True)
-        chip_size_group_box_layout.addWidget(self.__ccd_chip_result_diagonally, 2, 3)
+        chip_size_group_box_layout.addWidget(
+            self.__ccd_chip_result_diagonally, 2, 3)
 
         # Clipboard
         d_clipboard_button = QPushButton()
@@ -304,7 +303,6 @@ class CalcCCDWidget(QGroupBox):
         d_clipboard_button.setToolTip(tr.TOOLTIP_COPY_TO_CLIPBOARD(self))
         d_clipboard_button.clicked.connect(lambda: self.__copy_to_clipboard(7))
         chip_size_group_box_layout.addWidget(d_clipboard_button, 2, 4)
-
 
         return chip_size_group_box
 
@@ -350,11 +348,15 @@ class CalcCCDWidget(QGroupBox):
         p_size = self.__ccd_chip_pixel_size.value()
 
         if h_res > 0 and v_res > 0 and p_size > 0:
-            h_size, v_size, diagonally = Calc.ccd_chip_size(p_size, h_res, v_res)
+            h_size, v_size, diagonally = Calc.ccd_chip_size(
+                p_size, h_res, v_res)
 
-            self.__ccd_chip_result_h.setText(self.__locale.toString(h_size, precision=3))
-            self.__ccd_chip_result_v.setText(self.__locale.toString(v_size, precision=3))
-            self.__ccd_chip_result_diagonally.setText(self.__locale.toString(diagonally, precision=3))
+            self.__ccd_chip_result_h.setText(
+                self.__locale.toString(h_size, precision=3))
+            self.__ccd_chip_result_v.setText(
+                self.__locale.toString(v_size, precision=3))
+            self.__ccd_chip_result_diagonally.setText(
+                self.__locale.toString(diagonally, precision=3))
 
     def __copy_to_clipboard(self, mode):
         text = ''

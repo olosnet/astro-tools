@@ -1,3 +1,4 @@
 from .calc_ccd_widget_tr import CalcCCDWidgetTranslate
+from .calc_time_widget_tr import CalcTimeWidgetTranslate
 from .calc_widget_tr import CalcWidgetTranslate
 from .main_window_tr import MainWindowTranslate
