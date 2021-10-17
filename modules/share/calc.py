@@ -32,7 +32,11 @@ class Calc:
         return ccd_h_size, ccd_v_size, diagonally
 
     @staticmethod
-    def to_jd(year, month, day, hh, mm, ss, precision = 10):
+    def to_jd_dt(dt : datetime, precision=10) -> float:
+        return Calc.to_jd(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second, precision)
+
+    @staticmethod
+    def to_jd(year: int, month: int, day: int, hh: int, mm: int, ss: int, precision=10) -> float:
         jd_offset = 1721424.5
         od = date(year, month, day).toordinal() + jd_offset
         hh_mm_ss = (3600 * hh + 60 * mm + ss) / 86400
@@ -40,7 +44,7 @@ class Calc:
         return Calc.trunc_f(od + hh_mm_ss, precision)
 
     @staticmethod
-    def from_jd(jd_date: float, precision = 10) -> datetime:
+    def from_jd(jd_date: float, precision=10) -> datetime:
         jd_offset = 1721424.5
 
         or_date = jd_date - jd_offset
@@ -56,9 +60,9 @@ class Calc:
         dt = dt.replace(hour=hh, minute=mm, second=ss)
 
         return dt
-    
+
     @staticmethod
-    def trunc_f(f : float, n : int) -> float:
+    def trunc_f(f: float, n: int) -> float:
         '''Truncates/pads a float f to n decimal places without rounding'''
         s = '%.12f' % f
         i, p, d = s.partition('.')

@@ -2,11 +2,12 @@
 from PyQt5.QtCore import QLocale, QSize
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenuBar, QMenu, \
-    QAction, QStatusBar, QVBoxLayout, QTabWidget, QWidget
+    QAction, QVBoxLayout, QTabWidget, QWidget
 from modules.ui.translate import MainWindowTranslate as tr
 
 from modules.ui.widgets.calc_widget import CalcWidget
 from modules.ui.widgets.plate_solve_widget import PlateSolveWidget
+from modules.ui.widgets.status_bar_widget import StatusBarWidget
 
 
 class MainWindow(QMainWindow):
@@ -30,7 +31,7 @@ class MainWindow(QMainWindow):
         # Main Window Settings
         self.setWindowTitle("Astro-tools")
         self.resize(QSize(w_width, w_height))
-        self.setStatusBar(QStatusBar())
+        self.setStatusBar(StatusBarWidget(self))
 
         # Main menu
         self.__make_actions()
