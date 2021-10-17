@@ -32,7 +32,8 @@ class CalcWidget(QWidget):
         selector_layout.addStretch()
         self.__calc_selector = QComboBox()
         self.__calc_selector.currentIndexChanged.connect(self.on_calc_selector_change)
-        self.__calc_selector.addItem("CCD")
+        self.__calc_selector.addItem(tr.CCD_SELECTOR_ENTRY(self))
+        self.__calc_selector.addItem(tr.TIME_SELECTOR_ENTRY(self))
         selector_layout.addWidget(QLabel(tr.CALC_SELECTOR(selector_widget), selector_widget), 0)
         selector_layout.addWidget(self.__calc_selector, 0)
         selector_widget.setLayout(selector_layout)
@@ -40,4 +41,4 @@ class CalcWidget(QWidget):
 
     def on_calc_selector_change(self) -> None:
         ccd_visible = self.__calc_selector.currentIndex() == 0
-        self.__calc_selector.setVisible(ccd_visible)
+        self.__calc_ccd_widget.setVisible(ccd_visible)
