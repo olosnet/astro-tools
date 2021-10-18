@@ -62,7 +62,7 @@ class Calc:
         return dt
 
     @staticmethod
-    def calc_gmst(year: int, month: int, day: int, hh: int, mm: int, ss: int):
+    def calc_gmst(year: int, month: int, day: int, hh: int, mm: int, ss: int) -> float:
         jd_j2000 = 2451545.0
         jd_now = Calc.to_jd(year, month, day, hh, mm, ss)
         jd_difference = jd_now - jd_j2000
@@ -82,7 +82,7 @@ class Calc:
 
     @staticmethod
     def calc_gmst_hour_angle_dt(dt: datetime):
-        return Calc.calc_gmst_deg(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
+        return Calc.calc_gmst_hour_angle(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
 
     @staticmethod
     def calc_gmst_hour_angle(year: int, month: int, day: int, hh: int, mm: int, ss: int):
@@ -120,7 +120,7 @@ class Calc:
 
     @staticmethod
     def calc_lst_hour_angle_dt(dt: datetime, longitude: float):
-        return Calc.calc_lst_deg(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second, longitude)
+        return Calc.calc_lst_hour_angle(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second, longitude)
 
     @staticmethod
     def calc_lst_hhmmss_dt(dt: datetime, longitude: float):
