@@ -43,7 +43,7 @@ class StatusBarWidget(QStatusBar):
     def __update_datetime(self):
         dt = datetime.utcnow()
         self.__utc_time_label.setText("UTC: " + dt.strftime("%m/%d/%Y, %H:%M:%S"))
-        self.__current_julian_datetime = str(Calc.to_jd_dt(dt))
+        self.__current_julian_datetime = str(Calc.time_to_jd_dt(dt))
         self.__julian_date_label.setText("JD: " + self.__current_julian_datetime)
 
         if self.__now_copied:
