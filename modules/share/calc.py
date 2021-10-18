@@ -62,11 +62,7 @@ class Calc:
         return dt
 
     @staticmethod
-    def calc_gmst_deg_dt(dt: datetime):
-        return Calc.calc_gmst_deg(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
-
-    @staticmethod
-    def calc_gmst_deg(year: int, month: int, day: int, hh: int, mm: int, ss: int):
+    def calc_gmst(year: int, month: int, day: int, hh: int, mm: int, ss: int):
         jd_j2000 = 2451545.0
         jd_now = Calc.to_jd(year, month, day, hh, mm, ss)
         jd_difference = jd_now - jd_j2000
@@ -82,13 +78,84 @@ class Calc:
             while res < 0.0:
                 res += 360.0
 
-        deg = math.floor(res)
-        curr = (res - deg) * 60
+        return res
+
+    @staticmethod
+    def calc_gmst_hour_angle_dt(dt: datetime):
+        return Calc.calc_gmst_deg(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
+
+    @staticmethod
+    def calc_gmst_hour_angle(year: int, month: int, day: int, hh: int, mm: int, ss: int):
+        res = Calc.calc_gmst(year, month, day, hh, mm, ss)
+        return Calc.deg_to_hour_angle(res)
+
+    @staticmethod
+    def calc_gmst_hhmmss(year: int, month: int, day: int, hh: int, mm: int, ss: int):
+        res = Calc.calc_gmst(year, month, day, hh, mm, ss)
+        return Calc.deg_to_hhmmss(res)
+
+    @staticmethod
+    def calc_gmst_hhmmss_dt(dt: datetime):
+        return Calc.calc_gmst_hhmmss(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
+
+    @staticmethod
+    def calc_lst(year: int, month: int, day: int, hh: int, mm: int, ss: int, longitude: float):
+
+        gmst = Calc.calc_gmst(year, month, day, hh, mm, ss)
+        lst = gmst + longitude
+
+        if lst > 0.0:
+            while lst > 360.0:
+                lst -= 360.0
+        else:
+            while lst < 0.0:
+                lst += 360.0
+
+        return lst
+
+    @staticmethod
+    def calc_lst_hour_angle(year: int, month: int, day: int, hh: int, mm: int, ss: int, longitude: float):
+        res = Calc.calc_lst(year, month, day, hh, mm, ss, longitude)
+        return Calc.deg_to_hour_angle(res)
+
+    @staticmethod
+    def calc_lst_hour_angle_dt(dt: datetime, longitude: float):
+        return Calc.calc_lst_deg(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second, longitude)
+
+    @staticmethod
+    def calc_lst_hhmmss_dt(dt: datetime, longitude: float):
+        return Calc.calc_lst_hhmmss(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second, longitude)
+
+    @staticmethod
+    def calc_lst_hhmmss(year: int, month: int, day: int, hh: int, mm: int, ss: int, longitude: float):
+        res = Calc.calc_lst(year, month, day, hh, mm, ss, longitude)
+        return Calc.deg_to_hhmmss(res)
+
+    @staticmethod
+    def deg_to_hhmmss(deg: float):
+        obj = deg / 15.0
+        hours = math.floor(obj)
+
+        tmin = obj - hours
+        tmin = tmin * 60
+        minutes = math.floor(tmin)
+
+        tsec = tmin - minutes
+        tsec = tsec * 60
+        seconds = math.floor(tsec)
+
+        return hours, minutes, seconds
+
+    @staticmethod
+    def deg_to_hour_angle(deg: float):
+
+        angle = math.floor(deg)
+        curr = (deg - angle) * 60
         min = math.floor(curr)
         curr = (curr - min) * 60
         sec = math.floor(curr)
 
-        return deg, min, sec
+        return angle, min, sec
 
     @staticmethod
     def trunc_f(f: float, n: int) -> float:
