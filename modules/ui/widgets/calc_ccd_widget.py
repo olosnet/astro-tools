@@ -325,7 +325,7 @@ class CalcCCDWidget(QGroupBox):
             result = Calc.ccd_focal_lenght(pixel_size, resolution)
 
             self.__ccd_focal_length_result.setText(
-                self.__locale.toString(result, precision=1))
+                self.__locale.toString(result, precision=3))
 
     def __on_pixel_size_change(self) -> None:
         h_size = self.__ccd_pixel_size_hsize.value()
