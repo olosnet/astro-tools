@@ -15,6 +15,10 @@ class MainWindowTranslate:
         return parent.tr("&File")
 
     @staticmethod
+    def MENU_SETTINGS_S(parent: QObject) -> str:
+        return parent.tr("&Settings")
+
+    @staticmethod
     def MENU_HELP_S(parent : QObject) -> str:
         return parent.tr("&Help")
 
@@ -27,6 +31,14 @@ class MainWindowTranslate:
         return parent.tr("About")
 
     @staticmethod
+    def ACTION_LOCATIONS_S(parent: QObject) -> str:
+        return parent.tr("&Locations")
+
+
+    @staticmethod
     def TIP_EXIT_S(parent : QObject) -> str:
         return parent.tr("Close the application.")
 
+    @staticmethod
+    def TIP_SETTINGS_S(parent: QObject) -> str:
+        return parent.tr("Locations management.")

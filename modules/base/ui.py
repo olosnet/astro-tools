@@ -1,21 +1,26 @@
-
-from PyQt5.QtCore import QLocale, QSize
+from PyQt5.QtCore import QDir, QLocale, QSize, QStandardPaths
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenuBar, QMenu, \
     QAction, QVBoxLayout, QTabWidget, QWidget
-from modules.ui.translate import MainWindowTranslate as tr
 
-from modules.ui.widgets.calc_widget import CalcWidget
-from modules.ui.widgets.plate_solve_widget import PlateSolveWidget
-from modules.ui.widgets.status_bar_widget import StatusBarWidget
+from modules.base.db import ProfileSettingsDB
+from .tr import MainWindowTranslate as tr
+
+from modules.calc.ui import CalcWidget
+from modules.plate_solve.ui import PlateSolveWidget
+from modules.locations.ui import LocationsDialog
+
+from .status_bar.ui import StatusBarWidget
 
 
 class MainWindow(QMainWindow):
 
     __app = None
+    __profile_db : ProfileSettingsDB = None
 
     __action_quit = None
     __action_about = None
+    __action_settings_locations = None
 
     __main_tab = None
 
@@ -23,10 +28,21 @@ class MainWindow(QMainWindow):
     __locale =  QLocale(QLocale.system().name())
 
 
-    def __init__(self, app: QApplication, w_width=800, w_height=600) -> None:
-        super().__init__()
+    __location_settings_dialog = None
 
+
+    def __init__(self, app: QApplication, w_width=800, w_height=600) -> None:
+
+        super().__init__()
         self.__app = app
+
+        # Get configuration path
+        config_path = QDir(QStandardPaths.writableLocation(QStandardPaths.ConfigLocation))
+        config_path.mkpath("astro-tools")
+        config_path.cd("astro-tools")
+
+        # Init profile settings DB
+        self.__profile_db = ProfileSettingsDB(config_path.path())
 
         # Main Window Settings
         self.setWindowTitle("Astro-tools")
@@ -61,16 +77,26 @@ class MainWindow(QMainWindow):
 
         self.__action_about = QAction(tr.ACTION_ABOUT_S(self), self)
 
+        self.__action_settings_locations = QAction(tr.ACTION_LOCATIONS_S(self), self)
+        self.__action_settings_locations.setStatusTip(tr.TIP_SETTINGS_S(self))
+        self.__action_settings_locations.triggered.connect(self.locations_settings_dialog)
+
     def __make_main_menu(self) -> QMenuBar:
         menu_bar = QMenuBar(self)
 
         file_menu = QMenu(tr.MENU_FILE_S(self), self)
         file_menu.addAction(self.__action_quit)
+        file_menu.addAction
+
+        settings_menu = QMenu(tr.MENU_SETTINGS_S(self), self)
+        settings_menu.addAction(self.__action_settings_locations)
+
 
         help_menu = QMenu(tr.MENU_HELP_S(self), self)
         help_menu.addAction(self.__action_about)
 
         menu_bar.addMenu(file_menu)
+        menu_bar.addMenu(settings_menu)
         menu_bar.addMenu(help_menu)
 
         return menu_bar
@@ -79,7 +105,14 @@ class MainWindow(QMainWindow):
         self.show()
 
     def close_app(self) -> None:
-        self.__app.exit(0)
+        self.close()
 
+    def locations_settings_dialog(self) -> None:
+        if not self.__location_settings_dialog:
+            self.__location_settings_dialog = LocationsDialog(self, self.__locale, self.__profile_db)
 
+        self.__location_settings_dialog.exec_()
+
+    def closeEvent(self, event):
+        self.__profile_db.close()
 

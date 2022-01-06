@@ -1,12 +1,11 @@
 
 from PyQt5 import QtGui
-from PyQt5.QtWidgets import QApplication, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QLineEdit, QMainWindow, QMenuBar, QMenu, \
+from PyQt5.QtWidgets import QApplication, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QLineEdit, \
     QPushButton, QSpinBox, QVBoxLayout, QWidget, QGroupBox
 
-from modules.share.calc import Calc
-from modules.ui.translate import CalcCCDWidgetTranslate as tr
+from .logic import CalcCCD
+from .tr import CalcCCDWidgetTranslate as tr
 
-import modules.ui.res
 
 
 class CalcCCDWidget(QGroupBox):
@@ -311,7 +310,7 @@ class CalcCCDWidget(QGroupBox):
         focal_length = self.__ccd_resolution_focal_length.value()
 
         if pixel_size > 0 and focal_length > 0:
-            result = Calc.ccd_resolution(pixel_size, focal_length)
+            result = CalcCCD.ccd_resolution(pixel_size, focal_length)
 
             self.__ccd_resolution_result.setText(
                 self.__locale.toString(result, precision=4)
@@ -322,7 +321,7 @@ class CalcCCDWidget(QGroupBox):
         resolution = self.__ccd_focal_length_resolution.value()
 
         if pixel_size > 0 and resolution > 0:
-            result = Calc.ccd_focal_lenght(pixel_size, resolution)
+            result = CalcCCD.ccd_focal_lenght(pixel_size, resolution)
 
             self.__ccd_focal_length_result.setText(
                 self.__locale.toString(result, precision=3))
@@ -334,7 +333,7 @@ class CalcCCDWidget(QGroupBox):
         v_resolution = self.__ccd_pixel_size_vresolution.value()
 
         if h_size > 0 and v_size > 0 and h_resolution > 0 and v_resolution > 0:
-            hpixel_size, vpixelsize = Calc.ccd_pixel_size(
+            hpixel_size, vpixelsize = CalcCCD.ccd_pixel_size(
                 h_size, v_size, h_resolution, v_resolution)
 
             self.__ccd_pixel_size_hresult.setText(
@@ -348,7 +347,7 @@ class CalcCCDWidget(QGroupBox):
         p_size = self.__ccd_chip_pixel_size.value()
 
         if h_res > 0 and v_res > 0 and p_size > 0:
-            h_size, v_size, diagonally = Calc.ccd_chip_size(
+            h_size, v_size, diagonally = CalcCCD.ccd_chip_size(
                 p_size, h_res, v_res)
 
             self.__ccd_chip_result_h.setText(

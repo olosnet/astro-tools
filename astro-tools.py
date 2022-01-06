@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from PyQt5.QtWidgets import QApplication
-from modules.ui import MainWindow
+from modules.base.ui import MainWindow
 
 def main():
 

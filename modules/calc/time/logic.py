@@ -1,39 +1,12 @@
-import math
 from datetime import datetime, date, timedelta
+import math
+import pytz
 
-
-class Calc:
-
-    @staticmethod
-    def ccd_resolution(ccd_pixel_size, focal_lenght, multi_factor=206.265):
-        result = (ccd_pixel_size / focal_lenght) * multi_factor
-
-        return result
-
-    @staticmethod
-    def ccd_focal_lenght(ccd_pixel_size, ccd_resolution, multi_factor=206.265):
-        result = (ccd_pixel_size * multi_factor) / ccd_resolution
-
-        return result
-
-    @staticmethod
-    def ccd_pixel_size(h_size, v_size, h_resolution, v_resolution):
-        h_pixel_size = h_size / h_resolution
-        v_pixel_size = v_size / v_resolution
-
-        return h_pixel_size, v_pixel_size
-
-    @staticmethod
-    def ccd_chip_size(pixel_size, h_resolution, v_resolution):
-        ccd_h_size = pixel_size / h_resolution
-        ccd_v_size = pixel_size / v_resolution
-        diagonally = math.sqrt(ccd_h_size ** 2 + ccd_v_size ** 2)
-
-        return ccd_h_size, ccd_v_size, diagonally
+class CalcTime:
 
     @staticmethod
     def time_to_jd_dt(dt: datetime, precision=10) -> float:
-        return Calc.time_to_jd(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second, precision)
+        return CalcTime.time_to_jd(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second, precision)
 
     @staticmethod
     def time_to_jd(year: int, month: int, day: int, hh: int, mm: int, ss: int, precision=10) -> float:
@@ -41,7 +14,7 @@ class Calc:
         od = date(year, month, day).toordinal() + jd_offset
         hh_mm_ss = (3600 * hh + 60 * mm + ss) / 86400
 
-        return Calc.trunc_f(od + hh_mm_ss, precision)
+        return CalcTime.trunc_f(od + hh_mm_ss, precision)
 
     @staticmethod
     def time_from_jd(jd_date: float, precision=10) -> datetime:
@@ -49,7 +22,7 @@ class Calc:
 
         or_date = jd_date - jd_offset
         int_or_date = int(or_date)
-        d_or_date = Calc.trunc_f(or_date - int_or_date, precision)
+        d_or_date = CalcTime.trunc_f(or_date - int_or_date, precision)
 
         day_offset = d_or_date * 86400
         hh = int(day_offset / 3600)
@@ -64,7 +37,7 @@ class Calc:
     @staticmethod
     def time_calc_gmst(year: int, month: int, day: int, hh: int, mm: int, ss: int) -> float:
         jd_j2000 = 2451545.0
-        jd_now = Calc.time_to_jd(year, month, day, hh, mm, ss)
+        jd_now = CalcTime.time_to_jd(year, month, day, hh, mm, ss)
         jd_difference = jd_now - jd_j2000
         jc = jd_difference / 36525.0
 
@@ -82,26 +55,26 @@ class Calc:
 
     @staticmethod
     def time_calc_gmst_hour_angle_dt(dt: datetime):
-        return Calc.time_calc_gmst_hour_angle(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
+        return CalcTime.time_calc_gmst_hour_angle(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
 
     @staticmethod
     def time_calc_gmst_hour_angle(year: int, month: int, day: int, hh: int, mm: int, ss: int):
-        res = Calc.time_calc_gmst(year, month, day, hh, mm, ss)
-        return Calc.deg_to_hour_angle(res)
+        res = CalcTime.time_calc_gmst(year, month, day, hh, mm, ss)
+        return CalcTime.deg_to_hour_angle(res)
 
     @staticmethod
     def time_calc_gmst_hhmmss(year: int, month: int, day: int, hh: int, mm: int, ss: int):
-        res = Calc.time_calc_gmst(year, month, day, hh, mm, ss)
-        return Calc.deg_to_hhmmss(res)
+        res = CalcTime.time_calc_gmst(year, month, day, hh, mm, ss)
+        return CalcTime.deg_to_hhmmss(res)
 
     @staticmethod
     def time_calc_gmst_hhmmss_dt(dt: datetime):
-        return Calc.time_calc_gmst_hhmmss(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
+        return CalcTime.time_calc_gmst_hhmmss(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second)
 
     @staticmethod
     def time_calc_lst(year: int, month: int, day: int, hh: int, mm: int, ss: int, longitude: float):
 
-        gmst = Calc.time_calc_gmst(year, month, day, hh, mm, ss)
+        gmst = CalcTime.time_calc_gmst(year, month, day, hh, mm, ss)
         lst = gmst + longitude
 
         if lst > 0.0:
@@ -115,21 +88,21 @@ class Calc:
 
     @staticmethod
     def time_calc_lst_hour_angle(year: int, month: int, day: int, hh: int, mm: int, ss: int, longitude: float):
-        res = Calc.time_calc_lst(year, month, day, hh, mm, ss, longitude)
-        return Calc.deg_to_hour_angle(res)
+        res = CalcTime.time_calc_lst(year, month, day, hh, mm, ss, longitude)
+        return CalcTime.deg_to_hour_angle(res)
 
     @staticmethod
     def time_calc_lst_hour_angle_dt(dt: datetime, longitude: float):
-        return Calc.time_calc_lst_hour_angle(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second, longitude)
+        return CalcTime.time_calc_lst_hour_angle(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second, longitude)
 
     @staticmethod
     def time_calc_lst_hhmmss_dt(dt: datetime, longitude: float):
-        return Calc.time_calc_lst_hhmmss(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second, longitude)
+        return CalcTime.time_calc_lst_hhmmss(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second, longitude)
 
     @staticmethod
     def time_calc_lst_hhmmss(year: int, month: int, day: int, hh: int, mm: int, ss: int, longitude: float):
-        res = Calc.time_calc_lst(year, month, day, hh, mm, ss, longitude)
-        return Calc.deg_to_hhmmss(res)
+        res = CalcTime.time_calc_lst(year, month, day, hh, mm, ss, longitude)
+        return CalcTime.deg_to_hhmmss(res)
 
     @staticmethod
     def deg_to_hhmmss(deg: float):
@@ -180,8 +153,8 @@ class Calc:
         return int(h), int(m), int(s)
 
     def ra_to_local_ra(ut_dt : datetime, longitude: float, ra_hh : int, ra_mm : int, ra_ss : int):
-        hh1, mm1, ss1 = Calc.time_calc_lst_hhmmss_dt(ut_dt, longitude)
-        return Calc.time_difference(hh1, mm1, ss1, ra_hh, ra_mm, ra_ss)
+        hh1, mm1, ss1 = CalcTime.time_calc_lst_hhmmss_dt(ut_dt, longitude)
+        return CalcTime.time_difference(hh1, mm1, ss1, ra_hh, ra_mm, ra_ss)
 
     @staticmethod
     def trunc_f(f: float, n: int) -> float:
@@ -189,3 +162,9 @@ class Calc:
         s = '%.12f' % f
         i, p, d = s.partition('.')
         return float('.'.join([i, (d+'0'*n)[:n]]))
+
+    @staticmethod
+    def is_dst(zonename):
+        tz = pytz.timezone(zonename)
+        now = pytz.utc.localize(datetime.utcnow())
+        return now.astimezone(tz).dst() != timedelta(0)

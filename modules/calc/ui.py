@@ -1,8 +1,10 @@
 from PyQt5.QtWidgets import QComboBox, QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
-from modules.ui.translate import CalcWidgetTranslate as tr
-from modules.ui.widgets.calc_ccd_widget import CalcCCDWidget
-from modules.ui.widgets.calc_time_widget import CalcTimeWidget
+from .ccd.ui import CalcCCDWidget
+from .time.ui import CalcTimeWidget
+
+
+from .tr import CalcWidgetTranslate as tr
 
 
 class CalcWidget(QWidget):

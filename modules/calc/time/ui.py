@@ -3,11 +3,11 @@ from PyQt5 import QtGui
 from PyQt5.QtWidgets import QApplication, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QLineEdit, QMainWindow, QMenuBar, QMenu, \
     QPushButton, QSpinBox, QVBoxLayout, QWidget, QGroupBox
 
-from modules.share.calc import Calc
-from modules.ui.translate import CalcTimeWidgetTranslate as tr
+import modules.base.res
+from .tr import CalcTimeWidgetTranslate as tr
 
-import modules.ui.res
 
+from .logic import CalcTime
 
 class CalcTimeWidget(QGroupBox):
 
